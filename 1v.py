@@ -5733,16 +5733,20 @@ class MainWindow(tk.Tk):
         ttk.Radiobutton(layer_frame, text="По слоям", variable=self.dose_per_layer, value=True).pack(side="left",
                                                                                                      padx=5)
 
-        # Кнопки для дозовых карт
-        ttk.Button(dose_frame, text="Дозовая карта (все частицы)",
-                   command=lambda: self.plot_dose_map(primary=None, per_layer=self.dose_per_layer.get())).pack(fill="x",
-                                                                                                               pady=1)
-        ttk.Button(dose_frame, text="Доза (первичные)",
-                   command=lambda: self.plot_dose_map(primary=True, per_layer=self.dose_per_layer.get())).pack(fill="x",
-                                                                                                               pady=1)
-        ttk.Button(dose_frame, text="Доза (вторичные)",
-                   command=lambda: self.plot_dose_map(primary=False, per_layer=self.dose_per_layer.get())).pack(
-            fill="x", pady=1)
+        # Переключатель типа дозовой карты
+        dose_type_frame = ttk.Frame(dose_frame)
+        dose_type_frame.pack(fill="x", pady=2)
+        ttk.Label(dose_type_frame, text="Тип дозовой карты:").pack(anchor="w")
+        self.dose_type = tk.StringVar(value="all")
+        ttk.Radiobutton(dose_type_frame, text="Дозовая карта (все частицы)", variable=self.dose_type, value="all",
+                        command=lambda: self.plot_dose_map(primary=None, per_layer=self.dose_per_layer.get())).pack(
+            anchor="w", pady=2)
+        ttk.Radiobutton(dose_type_frame, text="Доза (первичные)", variable=self.dose_type, value="primary",
+                        command=lambda: self.plot_dose_map(primary=True, per_layer=self.dose_per_layer.get())).pack(
+            anchor="w", pady=2)
+        ttk.Radiobutton(dose_type_frame, text="Доза (вторичные)", variable=self.dose_type, value="secondary",
+                        command=lambda: self.plot_dose_map(primary=False, per_layer=self.dose_per_layer.get())).pack(
+            anchor="w", pady=2)
         # ===== КОНЕЦ НОВОГО БЛОКА =====
 
         # =========================================
