@@ -2253,10 +2253,8 @@ class Parser:
             # Лог нормализация для визуализации
             zmax = Z.max()
             if zmax > 0:
-                eps = zmax * 1e-4
-                Z = np.log10(Z + eps)
-                Z -= Z.min()
-                Z /= Z.max() if Z.max() > 0 else 1.0
+                Z /= zmax  # Нормализация без логарифмирования
+
             Z = gaussian_filter(Z, sigma=1.0)
             return Z
 
@@ -2592,7 +2590,7 @@ class Parser:
         dose_map = H.T
 
         # Применяем логарифмическое масштабирование (добавляем маленькое число чтобы избежать log(0))
-        dose_map = np.log10(dose_map + 1e-15)
+        # dose_map = np.log10(dose_map + 1e-15)
 
         return dose_map, x_centers, y_centers
 
@@ -2731,7 +2729,8 @@ class Parser:
                 divider = make_axes_locatable(ax)
                 cax = divider.append_axes("right", size="5%", pad=0.05)
                 cbar = fig.colorbar(im, cax=cax)
-                cbar.set_label(f'log10(Доза, {unit_display})')
+                cbar.set_label(f'Доза, {unit_display}')
+
 
             # Добавляем информацию о слоях
             if self.layers:
